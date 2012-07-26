@@ -14,21 +14,34 @@ def player(my_moves, opp_moves):
 
     TRIALS = 1000
 
-    def match_history(age,moves):
+    def match_single(i,moves):
+        j = 0
+        for high,low in izip(reversed(moves),reversed(moves[:i])):
+            if high == low and j < i:
+                j += 1
+            else:
+                return j
+
+    def match_both(i):
+        j = 0
+        for my_high,my_low,opp_high,opp_low in izip(reversed(my_moves),reversed(my_moves[:i]),reversed(opp_moves),reversed(opp_moves[:i])):
+            if my_high == my_low and opp_high == opp_low and j < i:
+                j+= 1
+            else:
+                return j
+
+    def match_history(age,moves=None):
         best = 0
-        best_length = None
-        num = len(moves)
-        if moves:
+        best_length = 0   # was None, but logic breaks bc 0 > None in j > best_length test below
+        num = len(my_moves)
+        if num:
             for i in xrange(num-1,num-age-1,-1):
                 if i < best_length:
                     break
-                # in-line match function, which returns j
-                j = 0
-                for high,low in izip(reversed(moves),reversed(moves[:i])):
-                    if high == low and j < i:
-                        j += 1
-                    else:
-                        break
+                if moves is None:
+                    j = match_both(i)
+                else:
+                    j = match_single(i,moves)
                 if j > best_length:
                     best_length = j
                     best = i   #this is going to be used as index,but here it is slice endpoint, so don't need to +1
@@ -82,8 +95,7 @@ def player(my_moves, opp_moves):
         player.statz[1].add(rps_to_num[opp_moves[-1]],1)
 
     for a,age in enumerate(ages):
-        best = [match_history(age,my_moves), match_history(age,opp_moves)]
-        best.append(max(best))  #was min ... the smallest common matching segment means the largest index into move history
+        best = [match_history(age,my_moves), match_history(age,opp_moves), match_history(age,None)]
         for w,b in enumerate(best):
             player.pr_history[a][w][0].do_predict(guess if b==0 else rps_to_num[my_moves[b]])
             player.pr_history[a][w][1].do_predict(guess if b==0 else rps_to_num[opp_moves[b]])
