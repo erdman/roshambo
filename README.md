@@ -3,8 +3,10 @@ roshambo
 
 Roshambo bots including Python translation of Dan Egnor's Iocaine Powder
 
-Testing vs 'good ole rock' in REPL:
+As the following transcript shows, the translation is slightly incomplete ... there's a bug somewhere ...
 
+Testing vs 'good ole rock' in REPL:
+<pre>
 >>>> execfile('iocaine.py')
 >>>> me = []
 >>>> opp = []
@@ -34,3 +36,4 @@ rock rock
 rock rock
 rock rock
 scissors rock
+</pre>
