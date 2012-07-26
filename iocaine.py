@@ -83,7 +83,7 @@ def player(my_moves, opp_moves):
 
     for a,age in enumerate(ages):
         best = [match_history(age,my_moves), match_history(age,opp_moves)]
-        best.append(min(best))
+        best.append(max(best))  #was min ... the smallest common matching segment means the largest index into move history
         for w,b in enumerate(best):
             player.pr_history[a][w][0].do_predict(guess if b==0 else rps_to_num[my_moves[b]])
             player.pr_history[a][w][1].do_predict(guess if b==0 else rps_to_num[opp_moves[b]])
