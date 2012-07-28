@@ -174,6 +174,9 @@ def player(my_moves, opp_moves):
             if player.gear[j][i] == player.gear[j][T]:
                 gear_freq[player.gear[j][i+1]] += 1
 
+        #original source allocated to 9 positions of gear_freq array, but only allocated first three
+        #also, only looked at first 3 to find the max_index
+        #unclear whether to seek max index over all 9 gear_freq's or just first 3 (as original code)
         player.p_full[j][3] = (player.p_full[j][1] + max_index(gear_freq)) % 3
 
     # end make_predictions()
