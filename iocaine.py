@@ -33,20 +33,17 @@ def player(my_moves, opp_moves):
     def match_history(age,moves=None):
         best = 0
         best_length = 0   # was None, but logic breaks bc 0 > None in j > best_length test below
-        num = len(my_moves)
+        num = len(my_moves)  # the number of trials completed
+        last_move_index = num - 1
         if num:
-            for i in xrange(num-1,num-age-1,-1):
-                if i < best_length:
-                    break
-                if moves is None:
-                    j = match_both(i)
-                else:
-                    j = match_single(i,moves)
+            i = last_move_index - 1    # start reverse loop at 2nd last move
+            j = None
+            while i > last_move_index - age and i > best_length and j <= num/2:
+                j = match_both(i) if moves is None else match_single(i,moves)
                 if j > best_length:
                     best_length = j
                     best = i   #this is going to be used as index,but here it is slice endpoint, so don't need to +1
-                    if j > num/2:
-                        break
+                i -= 1
         return best
 
     class stats:
